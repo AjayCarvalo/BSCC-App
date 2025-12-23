@@ -31,16 +31,21 @@ const FixturesSat2: React.FC = () => {
 
         const data = await response.json();
         setFixtures(data.matches || []);
-      } catch (err: any) {
-        console.error("An error occurred:", err);
-        setError(err.message || "Unknown error occurred");
-      } finally {
-        setLoading(false);
+      } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error(err.message);
+        setError(err.message);
+      } else {
+        console.error(err);
+        setError("Unknown error occurred");
       }
-    };
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchFixtures();
-  }, []);
+  fetchFixtures();
+}, []);
 
   if (loading) {
     return (
