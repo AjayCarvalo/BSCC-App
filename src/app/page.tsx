@@ -14,27 +14,27 @@ export default function HomePage() {
 
         {/* Right: welcome text */}
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-3">
+          <h1 className="text-center text-3xl md:text-4xl font-bold mb-3">
             Welcome to Braywood Stallions Cricket Club
           </h1>
-          <p className="text-gray-300 mb-4">
+          <p className="text-black-300 mb-4 text-center">
             Home of grassroots cricket in Berkshire. We are a community-focused
             club competing in local leagues and providing opportunities for
             players of all ages and abilities.
           </p>
-          <div className="flex gap-3">
+          <div className="flex gap-3 justify-center">
             <a
-              href="/join"
+              href="/register"
               className="px-4 py-2 rounded-full bg-yellow-400 text-black font-semibold text-sm hover:bg-yellow-300"
             >
               Join the Stallions
             </a>
-            <a
+            {/* <a
               href="/fixtures"
               className="px-4 py-2 rounded-full border border-white/70 text-sm hover:bg-white hover:text-[#800000]"
             >
               View Fixtures
-            </a>
+            </a> */}
           </div>
         </div>
       </section>

@@ -1,6 +1,11 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
+import AuthSessionProvider from "@/components/SessionProvider";
+import Link from "next/link";
+import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+import Image from "next/image";
+
 
 export const metadata: Metadata = {
   title: "Braywood Stallions CC",
@@ -15,55 +20,103 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-neutral-950 text-white">
+        <AuthSessionProvider>
         <div className="min-h-screen flex flex-col">
-          {/* Top black strip (Section 1) */}
-          <div className="w-full bg-black text-xs text-gray-300">
-            <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-1">
-              {/* Left: social icons placeholder */}
-              <div className="flex gap-3">
-                <span>Facebook</span>
-                <span>X</span>
-                <span>YouTube</span>
-                <span>Install App</span>
-              </div>
-              {/* Right: 3 links placeholder */}
-              <div className="flex gap-4">
-                <a href="#" className="hover:text-white">
-                  League
-                </a>
-                <a href="#" className="hover:text-white">
-                  Play-Cricket
-                </a>
-                <a href="#" className="hover:text-white">
-                  RBWM
-                </a>
-              </div>
-            </div>
-          </div>
+
+{/* Section 1: Top black strip */}
+<div className="w-full bg-black text-xs text-gray-300">
+  <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-2">
+    
+    {/* Left: Social media icons */}
+    <div className="flex items-center gap-4">
+      <a
+        href="https://www.facebook.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:text-white transition"
+        aria-label="Facebook"
+      >
+        <FaFacebookF size={14} />
+      </a>
+
+      <a
+        href="https://www.instagram.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:text-white transition"
+        aria-label="Instagram"
+      >
+        <FaInstagram size={15} />
+      </a>
+
+      <a
+        href="https://www.youtube.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:text-white transition"
+        aria-label="YouTube"
+      >
+        <FaYoutube size={16} />
+      </a>
+    </div>
+
+    {/* Right: External links */}
+    <div className="flex items-center gap-4">
+      <a 
+      href="https://tvlcricket.uk/"
+      target="_blank" 
+      rel="noopener noreferrer"
+      className="hover:text-white transition">
+        TVCL
+      </a>
+      <a href="https://middlesexpremier.co.uk/"
+      target="_blank" 
+      rel="noopener noreferrer" 
+      className="hover:text-white transition">
+        MPCL
+      </a>
+      <a href="https://braywoodcc.play-cricket.com/"
+      target="_blank" 
+      rel="noopener noreferrer" 
+      className="hover:text-white transition">
+        Play-Cricket
+      </a>
+    </div>
+  </div>
+</div>
 
           {/* Nav bar (Section 2) */}
           <header className="w-full bg-[#800000]">
             <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
+
               {/* Left: logo + name */}
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center text-black font-bold">
-                  BS
-                </div>
+              <div className="flex items-center gap-3 text-white">
+              
+                    {/* Logo */}
+              <Image
+                src="/logo.jpg"
+                alt="Braywood Stallions CC Logo"
+                width={150}
+                height={150}
+                className="object-contain rounded-md"
+                priority
+              />
+
                 <div className="flex flex-col leading-tight">
                   <span className="font-bold text-lg">
                     Braywood Stallions CC
                   </span>
                   <span className="text-xs text-gray-200">
-                    Braywood Stallions Cricket Club
+                    
                   </span>
                 </div>
               </div>
 
               {/* Right: nav links + buttons */}
-              <nav className="flex items-center gap-4 text-sm">
-                <a href="/" className="hover:underline">
+              <nav className="flex items-center gap-4 text-sm text-white">
+                <Link href="/" className="hover:underline">
                   Home
-                </a>
+                </Link>
                 <a href="/fixtures" className="hover:underline">
                   Fixtures
                 </a>
@@ -84,12 +137,12 @@ export default function RootLayout({
                 </a>
 
                 {/* Buttons */}
-                <a
-                  href="/join"
+                {/* <a
+                  href="/register"
                   className="ml-2 border border-white/60 px-3 py-1 rounded-full text-xs hover:bg-white hover:text-[#800000] transition"
                 >
-                  Join
-                </a>
+                  Register
+                </a> */}
                 <a
                   href="/login"
                   className="border border-yellow-400 bg-yellow-400 text-black px-3 py-1 rounded-full text-xs font-semibold hover:bg-yellow-300 transition"
@@ -108,7 +161,7 @@ export default function RootLayout({
           {/* Footer (Sections 9 & 10 combined for now) */}
           <footer className="mt-8">
             {/* Main footer */}
-            <div className="bg-neutral-900 border-t border-neutral-800">
+            <div className="bg-red-900 border-t border-neutral-800">
               <div className="max-w-6xl mx-auto px-4 py-8 grid gap-6 md:grid-cols-3 text-sm text-gray-300">
                 {/* Club name & address */}
                 <div>
@@ -116,11 +169,11 @@ export default function RootLayout({
                     Braywood Stallions Cricket Club
                   </h3>
                   <p>
-                    Braywood CC Ground
+                    Oakley Green Road
                     <br />
-                    Fifield, Berkshire
+                    Fifield, Windsor
                     <br />
-                    SL4 XXX
+                    SL4 4QF
                   </p>
                 </div>
 
@@ -190,6 +243,7 @@ export default function RootLayout({
             </div>
           </footer>
         </div>
+        </AuthSessionProvider>
       </body>
     </html>
   );
