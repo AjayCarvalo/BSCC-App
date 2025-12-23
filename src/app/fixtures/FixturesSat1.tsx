@@ -22,7 +22,7 @@ const FixturesSat1: React.FC = () => {
     const fetchFixtures = async () => {
       try {
         const response = await fetch(
-          "https://play-cricket.com/api/v2/matches.json?&site_id=1360&season=2025&api_token=8b8d4ec609c085b80955ea647f7b29f6"
+          "https://play-cricket.com/api/v2/matches.json?&site_id=1360&season=2025&api_token=YOUR_API_TOKEN"
         );
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -30,13 +30,8 @@ const FixturesSat1: React.FC = () => {
         const data = (await response.json()) as { matches: Match[] };
         setFixtures(data.matches || []);
       } catch (err: unknown) {
-        if (err instanceof Error) {
-          console.error(err.message);
-          setError(err.message);
-        } else {
-          console.error(err);
-          setError("Unknown error occurred");
-        }
+        if (err instanceof Error) setError(err.message);
+        else setError("Unknown error occurred");
       } finally {
         setLoading(false);
       }
@@ -45,33 +40,21 @@ const FixturesSat1: React.FC = () => {
     fetchFixtures();
   }, []);
 
-  if (loading) return <div className="p-6 text-gray-500 animate-pulse">Loading fixtures...</div>;
-  if (error) return <div className="p-6 text-red-500">{error}</div>;
+  if (loading) return <div>Loading fixtures...</div>;
+  if (error) return <div className="text-red-500">{error}</div>;
 
   const filteredFixtures = fixtures.filter(
     (match) => match.competition_name === "Division 5B"
   );
 
   return (
-    <div className="bg-white text-black p-6 rounded-lg shadow-lg">
-      <h2 className="text-xl font-bold mb-4">Saturday First XI Fixtures for 2025</h2>
-
-      {filteredFixtures.length === 0 ? (
-        <p>No fixtures found.</p>
-      ) : (
-        <ul className="space-y-3">
-          {filteredFixtures.map(match => (
-            <li key={match.id} className="border-b pb-2">
-              <strong>{match.match_date}</strong>
-              <br />
-              {match.home_club_name} {match.home_team_name} vs {match.away_club_name} {match.away_team_name}
-              <br />
-              <span className="text-sm text-gray-600">{match.ground_name}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <ul>
+      {filteredFixtures.map(match => (
+        <li key={match.id}>
+          {match.home_club_name} {match.home_team_name} vs {match.away_club_name} {match.away_team_name}
+        </li>
+      ))}
+    </ul>
   );
 };
 
