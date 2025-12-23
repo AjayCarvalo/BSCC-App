@@ -29,23 +29,23 @@ const FixturesSun1: React.FC = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json();
+        const data = (await response.json()) as { matches: Match[] };
         setFixtures(data.matches || []);
       } catch (err: unknown) {
-      if (err instanceof Error) {
-        console.error(err.message);
-        setError(err.message);
-      } else {
-        console.error(err);
-        setError("Unknown error occurred");
+        if (err instanceof Error) {
+          console.error(err.message);
+          setError(err.message);
+        } else {
+          console.error(err);
+          setError("Unknown error occurred");
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  fetchFixtures();
-}, []);
+    fetchFixtures();
+  }, []);
 
   if (loading) {
     return (

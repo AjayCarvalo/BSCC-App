@@ -30,20 +30,20 @@ const FixturesSat1: React.FC = () => {
         const data = (await response.json()) as { matches: Match[] };
         setFixtures(data.matches || []);
       } catch (err: unknown) {
-      if (err instanceof Error) {
-        console.error(err.message);
-        setError(err.message);
-      } else {
-        console.error(err);
-        setError("Unknown error occurred");
+        if (err instanceof Error) {
+          console.error(err.message);
+          setError(err.message);
+        } else {
+          console.error(err);
+          setError("Unknown error occurred");
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  fetchFixtures();
-}, []);
+    fetchFixtures();
+  }, []);
 
   if (loading) return <div className="p-6 text-gray-500 animate-pulse">Loading fixtures...</div>;
   if (error) return <div className="p-6 text-red-500">{error}</div>;
@@ -52,7 +52,7 @@ const FixturesSat1: React.FC = () => {
 
   return (
     <div className="bg-white text-black p-6 rounded-lg shadow-lg">
-      <h2 className="text-xl font-bold mb-4">Division 5B Fixtures for 2025</h2>
+      <h2 className="text-xl font-bold mb-4">Saturday First XI Fixtures for 2025</h2>
 
       {filteredFixtures.length === 0 ? (
         <p>No fixtures found.</p>
