@@ -48,7 +48,9 @@ const FixturesSat1: React.FC = () => {
   if (loading) return <div className="p-6 text-gray-500 animate-pulse">Loading fixtures...</div>;
   if (error) return <div className="p-6 text-red-500">{error}</div>;
 
-  const filteredFixtures = fixtures.filter(match => match.competition_name === "Division 5B");
+  const filteredFixtures = fixtures.filter(
+    (match) => match.competition_name === "Division 5B"
+  );
 
   return (
     <div className="bg-white text-black p-6 rounded-lg shadow-lg">
