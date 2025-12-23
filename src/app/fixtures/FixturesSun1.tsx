@@ -1,10 +1,22 @@
-'use client'
+'use client';
+
 import { useEffect, useState } from "react";
 
-const FixturesSun1 = () => {
-  const [fixtures, setFixtures] = useState([]);
+interface Match {
+  id: string;
+  match_date: string;
+  competition_name: string;
+  home_club_name: string;
+  home_team_name: string;
+  away_club_name: string;
+  away_team_name: string;
+  ground_name: string;
+}
+
+const FixturesSun1: React.FC = () => {
+  const [fixtures, setFixtures] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchFixtures = async () => {
@@ -12,10 +24,16 @@ const FixturesSun1 = () => {
         const response = await fetch(
           "http://play-cricket.com/api/v2/matches.json?&site_id=11371&season=2025&api_token=13776c06d7c5517b705e9926873b8cec"
         );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
         setFixtures(data.matches || []);
-      } catch (err) {
+      } catch (err: any) {
         console.error("An error occurred:", err);
+        setError(err.message || "Unknown error occurred");
       } finally {
         setLoading(false);
       }
@@ -24,26 +42,41 @@ const FixturesSun1 = () => {
     fetchFixtures();
   }, []);
 
-  if (loading) return <div className="p-6">Loading fixtures...</div>;
-  if (error) return <div className="p-6 text-red-500">{error}</div>;
+  if (loading) {
+    return (
+      <div className="p-6 text-center text-gray-500 animate-pulse">
+        Loading fixtures...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 text-center text-red-500">
+        {error}
+      </div>
+    );
+  }
+
+  const filteredFixtures = fixtures.filter(
+    (match) =>
+      match.competition_name === "Premier Division" ||
+      match.competition_name === "MPCL CUP"
+  );
 
   return (
     <div className="bg-white text-black p-6 rounded-lg shadow-lg">
-      <h2 className="text-xl font-bold mb-4">All Fixtures for 2025</h2>
-      {fixtures.length === 0 ? (
+      <h2 className="text-xl font-bold mb-4">Sunday First XI Fixtures for 2025</h2>
+
+      {filteredFixtures.length === 0 ? (
         <p>No fixtures found.</p>
       ) : (
         <ul className="space-y-3">
-          {fixtures
-          .filter((match) =>
-                match.competition_name === "Premier Division" ||
-                match.competition_name === "MPCL CUP"
-        ) // Filtering logic
-          .map((match) => (
+          {filteredFixtures.map((match) => (
             <li key={match.id} className="border-b pb-2">
               <strong>{match.match_date}</strong>
               <br />
-              <>{match.home_club_name} {match.home_team_name} vs {match.away_club_name} {match.away_team_name}</>
+              {match.home_club_name} {match.home_team_name} vs {match.away_club_name} {match.away_team_name}
               <br />
               <span className="text-sm text-gray-600">{match.ground_name}</span>
             </li>
